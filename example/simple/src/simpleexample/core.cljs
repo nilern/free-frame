@@ -1,5 +1,5 @@
 (ns simpleexample.core
-  (:require [free-frame.core :as fr]
+  (:require [free-frame.core :as fr :refer [defnc]]
             [cats.core :refer [mlet]]
             [fell.state :as st]
             [fell.lift :as lift]
@@ -12,6 +12,12 @@
 (defn initial-db []
   {:time (js/Date.)
    :time-color "#f34"})
+
+;;;; # Subscriptions
+
+(def subscriptions
+  {:time-color (fn [db _] (:time-color db))
+   :time (fn [db _] (:time db))})
 
 ;;;; # Events
 
@@ -33,19 +39,17 @@
 
 ;;;; # Views
 
-(defn clock []
-  (let [app (fr/useApplication)
-        time-string (-> @(.-db app) :time .toTimeString (str/split " ") first)]
-    [:div.example-clock {:style {:color (:time-color @(.-db app))}}
+(defnc clock [app]
+  (let [time-string (-> @(fr/subscribe app [:time]) .toTimeString (str/split " ") first)]
+    [:div.example-clock {:style {:color @(fr/subscribe app [:time-color])}}
      time-string]))
 
-(defn color-input []
-  (let [app (fr/useApplication)]
-    [:div.color-input
-     "Time color: "
-     [:input {:type "text"
-              :value (:time-color @(.-db app))
-              :on-change #(fr/dispatch app [:time-color-change (-> % .-target .-value)])}]]))
+(defnc color-input [app]
+  [:div.color-input
+   "Time color: "
+   [:input {:type "text"
+            :value (:time-color @(.-db app))
+            :on-change #(fr/dispatch app [:time-color-change (-> % .-target .-value)])}]])
 
 (defn ui []
   [:div
@@ -63,6 +67,6 @@
   (fr/render app [ui] (js/document.getElementById "app")))
 
 (defn ^:export run []
-  (let [app (fr/create-application (initial-db) event-handlers handle-effects)]
+  (let [app (fr/create-application (initial-db) subscriptions event-handlers handle-effects)]
     (js/setInterval (fn [] (dispatch-timer-event app)) 1000)
     (render app)))
