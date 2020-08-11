@@ -1,6 +1,8 @@
 (ns free-frame.core
   (:require-macros [free-frame.core])
-  (:require [reagent.core :as rg]
+  (:require [free-frame.application :refer [Application]]
+            [free-frame.event-loop :as event-loop]
+            [reagent.core :as rg]
             [reagent.dom :as rdom]
             [reagent.ratom :as ratom]
             react
@@ -20,22 +22,14 @@
     (set! (.-displayName context) "FreeFrameContext")
     context))
 
-(deftype Application [db subscriptions event-handlers effect-handler])
-
-(defn create-application [db subscriptions event-handlers effect-handler]
-  (Application. (rg/atom db) subscriptions event-handlers effect-handler))
-
-(defn useApplication [] (react/useContext context))
+(defn- useApplication [] (react/useContext context))
 
 (defn subscribe [^Application app [tag :as query]]
   (let [f (-> app .-subscriptions (get tag))
         db (.-db app)]
     (ratom/make-reaction #(f @db query))))
 
-(defn dispatch [^Application app, event]
-  (let [handle-event (-> app .-event_handlers (get (first event)))
-        handle-effects (.-effect_handler app)]
-    (->> event handle-event (handle-effects app))))
+(def dispatch event-loop/dispatch)
 
 (declare resume-app-db)
 
