@@ -2,6 +2,9 @@
   (:require [free-frame.core :as fr]
             [cats.core :refer [mlet]]
             [fell.state :as st]
+            [fell.lift :as lift]
+            [taksi.core :as t]
+            [kissabussi.core :as k]
             [clojure.string :as str]))
 
 ;;;; # Model
@@ -23,8 +26,10 @@
 ;;;; # Effects
 
 (defn handle-effects [app eff]
-  (-> eff
-      (fr/run-app-db app)))
+  (->> (fr/run-app-db eff app)
+       (lift/run k/context)
+       (t/fork (fn [err] (throw (js/Error. err)))
+               (fn [res] (assert (nil? res))))))
 
 ;;;; # Views
 
