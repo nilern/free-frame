@@ -12,6 +12,6 @@
                                       :active (complement :done)
                                       :done :done
                                       :all identity)]
-                      (-> db :todos vals (filter filter-fn))))
+                      (->> db :todos vals (filter filter-fn))))
 
    :all-complete? (fn [db _] (->> db :todos vals (every? :done)))})

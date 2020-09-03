@@ -1,5 +1,6 @@
 {:paths ["src" "../../src"]
  :deps {org.clojure/clojurescript {:mvn/version "1.10.764", :scope "provided"}
+        metosin/malli {:mvn/version "0.0.1-SNAPSHOT"}
         reagent/reagent {:mvn/version "1.0.0-alpha2"}
         github-nilern/fell {:git/url "https://github.com/nilern/fell"
                             :sha "fe6398388209b82ccbd1a5dd27b4c30d3d0c68df"}
