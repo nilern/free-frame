@@ -6,7 +6,7 @@
             [reagent.dom :as rdom]
             [reagent.ratom :as ratom]
             react
-            [fell.core :as fell]
+            [fell.core :as fell :refer [weave pure]]
             [fell.eff :refer [Pure Impure]]
             [fell.queue :as q]
             [fell.state :as st]
