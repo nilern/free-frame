@@ -18,7 +18,7 @@
 (def compiler (rg/create-compiler {:function-components true}))
 
 (def context
-  (let [context (react/createContext. nil)]
+  (let [context (react/createContext nil)]
     (set! (.-displayName context) "FreeFrameContext")
     context))
 
