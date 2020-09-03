@@ -5,9 +5,11 @@
 (def ^:private next-tick goog.async.nextTick)
 
 (defn- handle-event [^Application app event]
-  (let [handle-event (-> app .-event_handlers (get (first event)))
-        handle-effects (.-effect_handler app)]
-    (->> event handle-event (handle-effects app))))
+  (let [tag (first event)]
+    (if-some [handle-event (-> app .-event_handlers (get tag))]
+      (let [handle-effects (.-effect_handler app)]
+        (->> event handle-event (handle-effects app)))
+      (js/console.error (str "free-frame: no event handler registered for: " tag)))))
 
 (defn- handle-events [^Application app]
   (set! (.-running app) true)

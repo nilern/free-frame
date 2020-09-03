@@ -25,9 +25,10 @@
 (defn- useApplication [] (react/useContext context))
 
 (defn subscribe [^Application app [tag :as query]]
-  (let [f (-> app .-subscriptions (get tag))
-        db (.-db app)]
-    (ratom/make-reaction #(f @db query))))
+  (if-some [f (-> app .-subscriptions (get tag))]
+    (let [db (.-db app)]
+      (ratom/make-reaction #(f @db query)))
+    (js/console.error (str "free-frame: no subscription handler registered for: " tag))))
 
 (def dispatch event-loop/dispatch)
 
