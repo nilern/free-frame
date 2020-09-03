@@ -1,0 +1,9 @@
+{:paths ["src" "../../src"]
+ :deps {org.clojure/clojurescript {:mvn/version "1.10.764", :scope "provided"}
+        reagent/reagent {:mvn/version "1.0.0-alpha2"}
+        github-nilern/fell {:git/url "https://github.com/nilern/fell"
+                            :sha "fe6398388209b82ccbd1a5dd27b4c30d3d0c68df"}
+        github-nilern/kissabussi {:git/url "https://github.com/nilern/kissabussi"
+                                  :sha "791d476103161d08bdd8456c2deafbdb518e5970"}
+
+        thheller/shadow-cljs {:mvn/version "2.10.21"}}}
