@@ -8,14 +8,13 @@
             [todomvc.events :as events]
             [todomvc.effects :as effects]))
 
-(defn render [app]
-  (let [app-node (js/document.getElementById "app")]
-    (rdom/unmount-component-at-node app-node)
-    (fr/render app [views/todo-app] app-node)))
+(defn create-app [] (app/create db/initial subs/subscriptions events/handlers effects/handle))
 
-(defn ^:dev/after-load start []
-  (let [app (app/create db/initial subs/subscriptions events/handlers effects/handle)]
-    (render app)))
+(defn render [app] (fr/render app [views/todo-app] (js/document.getElementById "app")))
+
+(defn ^:dev/after-load reset []
+  (rdom/unmount-component-at-node (js/document.getElementById "app"))
+  (render (create-app)))
 
 (defn ^:export run []
-  (start))
+  (render (create-app)))
