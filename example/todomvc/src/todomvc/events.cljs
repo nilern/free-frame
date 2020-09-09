@@ -33,4 +33,13 @@
                                        todos (reduce (fn [todos id] (assoc-in todos [id :done] done*))
                                                      todos
                                                      (keys todos))]]
-                            (st/set (assoc db :todos todos))))})
+                            (st/set (assoc db :todos todos))))
+
+   :clear-completed (fn [_]
+                      (mlet [{:keys [todos] :as db} st/get
+                             :let [todos (transduce (comp (filter :done)
+                                                          (map :id))
+                                                    dissoc
+                                                    todos
+                                                    (vals todos))]]
+                        (st/set (assoc db :todos todos))))})

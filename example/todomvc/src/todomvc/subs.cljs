@@ -14,4 +14,9 @@
                                       :all identity)]
                       (->> db :todos vals (filter filter-fn))))
 
-   :all-complete? (fn [db _] (->> db :todos vals (every? :done)))})
+   :all-complete? (fn [db _] (->> db :todos vals (every? :done)))
+
+   :footer-counts (fn [{:keys [todos]} _]
+                    (let [completed-count (count (filter :done (vals todos)))]
+                      [(- (count todos) completed-count)
+                       completed-count]))})

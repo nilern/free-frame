@@ -70,9 +70,29 @@
      :on-save #(when (seq %)
                  (fr/dispatch app [:add-todo %]))}]])
 
+(defnc footer-controls [app]
+  (let [[active done] @(fr/subscribe app [:footer-counts])
+        showing @(fr/subscribe app [:showing])
+        a-fn (fn [filter-kw txt]
+               [:a {:class (when (= filter-kw showing) "selected")
+                    :href (str "#/" (name filter-kw))} txt])]
+    [:footer#footer
+     [:span#todo-count
+      [:strong active] " " (case active 1 "item" "items") " left"]
+     [:ul#filters
+      [:li (a-fn :all "All")]
+      [:li (a-fn :active "Active")]
+      [:li (a-fn :done "Completed")]]
+     (when (pos? done)
+       [:button#clear-completed {:on-click #(fr/dispatch app [:clear-completed])}
+        "Clear completed"])]))
+
 (defnc todo-app [app]
   [:div
    [:section#todoapp
     [task-entry]
     (when (seq @(fr/subscribe app [:todos]))
-      [task-list])]])
+      [task-list])
+    [footer-controls]]
+   [:footer#info
+    [:p "Double-click to edit a todo"]]])
