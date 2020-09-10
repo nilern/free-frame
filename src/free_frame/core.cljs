@@ -7,7 +7,7 @@
             [reagent.ratom :as ratom]
             react
             [fell.core :as fell :refer [weave pure request-eff]]
-            [fell.eff :refer [Pure Impure]]
+            [fell.eff :as eff :refer [Pure Impure]]
             [fell.queue :as q]
             [fell.state :as st]
             [fell.lift :as lift]
@@ -42,6 +42,8 @@
 (def get-app-db (request-eff [app-db-label (st/Get.)]))
 
 (defn set-app-db [value*] (request-eff [app-db-label (st/Set. value*)]))
+
+(defn update-app-db [f & args] (eff/-flat-map get-app-db (fn [db] (set-app-db (apply f db args)))))
 
 (declare resume-app-db)
 

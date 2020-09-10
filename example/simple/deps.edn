@@ -2,7 +2,7 @@
  :deps {org.clojure/clojurescript {:mvn/version "1.10.764", :scope "provided"}
         reagent/reagent {:mvn/version "1.0.0-alpha2"}
         github-nilern/fell {:git/url "https://github.com/nilern/fell"
-                            :sha "9a2c44b1a6b09db9e43d862a0f1bdc79f0e945e8"}
+                            :sha "46358432aad1f30ce7020cfebfd901f691ce1a54"}
         github-nilern/kissabussi {:git/url "https://github.com/nilern/kissabussi"
                                   :sha "791d476103161d08bdd8456c2deafbdb518e5970"}
 

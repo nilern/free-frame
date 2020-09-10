@@ -1,5 +1,5 @@
 (ns simpleexample.core
-  (:require [free-frame.core :as fr :refer [defnc set-app-db get-app-db set-app-db]]
+  (:require [free-frame.core :as fr :refer [defnc update-app-db]]
             [free-frame.application :as app]
             [cats.core :refer [mlet]]
             [taksi.core :as t]
@@ -20,12 +20,9 @@
 ;;;; # Events
 
 (def event-handlers
-  {:timer (fn [[_ new-time]]
-            (mlet [db get-app-db]
-              (set-app-db (assoc db :time new-time))))
-   :time-color-change (fn [[_ new-color]]
-                        (mlet [db get-app-db]
-                          (set-app-db (assoc db :time-color new-color))))})
+  {:timer (fn [[_ new-time]] (update-app-db assoc :time new-time))
+
+   :time-color-change (fn [[_ new-color]] (update-app-db assoc :time-color new-color))})
 
 ;;;; # Effects
 

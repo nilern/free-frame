@@ -1,6 +1,6 @@
 (ns todomvc.events
   (:require [cats.core :refer [mlet]]
-            [free-frame.core :refer [get-app-db set-app-db]]))
+            [free-frame.core :refer [get-app-db set-app-db update-app-db]]))
 
 (defn allocate-next-id
   "Returns the next todo id.
@@ -15,17 +15,11 @@
                       :let [id (allocate-next-id (:todos db))]]
                  (set-app-db (assoc-in db [:todos id] {:id id :title text :done false}))))
 
-   :toggle-done (fn [[_ id]]
-                  (mlet [db get-app-db]
-                    (set-app-db (update-in db [:todos id :done] not))))
+   :toggle-done (fn [[_ id]] (update-app-db update-in [:todos id :done] not))
 
-   :delete-todo (fn [[_ id]]
-                  (mlet [db get-app-db]
-                    (set-app-db (update db :todos dissoc id))))
+   :delete-todo (fn [[_ id]] (update-app-db update :todos dissoc id))
 
-   :save (fn [[_ id title]]
-           (mlet [db get-app-db]
-             (set-app-db (assoc-in db [:todos id :title] title))))
+   :save (fn [[_ id title]] (update-app-db assoc-in [:todos id :title] title))
 
    :complete-all-toggle (fn [_]
                           (mlet [{:keys [todos] :as db} get-app-db
