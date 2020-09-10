@@ -8,7 +8,7 @@
             [malli.core :as m]
             [malli.error :as merr]))
 
-(defn- state-checker [db-schema opts]
+(defn state-checker [db-schema opts]
   (let [valid? (m/validator db-schema opts)
         explain (m/explainer db-schema opts)]
     (letfn [(resume [suspension] (run (extract suspension)))
