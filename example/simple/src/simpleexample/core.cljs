@@ -1,11 +1,8 @@
 (ns simpleexample.core
-  (:require [free-frame.core :as fr :refer [defnc]]
+  (:require [free-frame.core :as fr :refer [defnc set-app-db get-app-db set-app-db]]
             [free-frame.application :as app]
             [cats.core :refer [mlet]]
-            [fell.state :as st]
-            [fell.lift :as lift]
             [taksi.core :as t]
-            [kissabussi.core :as k]
             [clojure.string :as str]))
 
 ;;;; # Model
@@ -24,17 +21,17 @@
 
 (def event-handlers
   {:timer (fn [[_ new-time]]
-            (mlet [db st/get]
-              (st/set (assoc db :time new-time))))
+            (mlet [db get-app-db]
+              (set-app-db (assoc db :time new-time))))
    :time-color-change (fn [[_ new-color]]
-                        (mlet [db st/get]
-                          (st/set (assoc db :time-color new-color))))})
+                        (mlet [db get-app-db]
+                          (set-app-db (assoc db :time-color new-color))))})
 
 ;;;; # Effects
 
 (defn handle-effects [app eff]
   (->> (fr/run-app-db eff app)
-       (lift/run k/context)
+       fr/run-task
        (t/fork (fn [err] (throw (js/Error. err)))
                (fn [res] (assert (nil? res))))))
 

@@ -1,5 +1,6 @@
 (ns free-frame.malli
-  (:require [cats.builtin]                                  ; to make [] a Functor
+  (:require [free-frame.core :refer [app-db-label]]
+            [cats.builtin]                                  ; to make [] a Functor
             [fell.core :refer [weave pure]]
             [fell.eff :refer [Pure Impure]]
             [fell.state :as st]
@@ -14,8 +15,9 @@
               (condp instance? eff
                 Pure eff
                 Impure (let [^Impure eff eff
-                             request (.-request eff)]
-                         (if (instance? st/Set request)
+                             [request-label request] (.-request eff)]
+                         (if (and (= request-label app-db-label)
+                                  (instance? st/Set request))
                            (let [state* (.-new_value ^st/Set request)]
                              (if (valid? state*)
                                (weave eff [nil] resume)
