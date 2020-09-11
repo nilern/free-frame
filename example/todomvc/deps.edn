@@ -5,6 +5,6 @@
         github-nilern/fell {:git/url "https://github.com/nilern/fell"
                             :sha "46358432aad1f30ce7020cfebfd901f691ce1a54"}
         github-nilern/kissabussi {:git/url "https://github.com/nilern/kissabussi"
-                                  :sha "791d476103161d08bdd8456c2deafbdb518e5970"}
+                                  :sha "5a3ceb55a03270ebb724abc241cd5158a64c717f"}
 
         thheller/shadow-cljs {:mvn/version "2.10.21"}}}
