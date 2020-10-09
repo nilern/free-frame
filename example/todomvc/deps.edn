@@ -2,6 +2,7 @@
  :deps {org.clojure/clojurescript {:mvn/version "1.10.764", :scope "provided"}
         metosin/malli {:mvn/version "0.0.1-SNAPSHOT"}
         reagent/reagent {:mvn/version "1.0.0-alpha2"}
+        metosin/reitit {:mvn/version "0.5.6"}
         github-nilern/fell {:git/url "https://github.com/nilern/fell"
                             :sha "46358432aad1f30ce7020cfebfd901f691ce1a54"}
         github-nilern/kissabussi {:git/url "https://github.com/nilern/kissabussi"

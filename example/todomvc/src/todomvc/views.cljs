@@ -1,5 +1,6 @@
 (ns todomvc.views
   (:require [reagent.core :as rg]
+            [reitit.frontend.easy :as rfe]
             [free-frame.core :as fr :refer [defnc]]
             [clojure.string :as str]))
 
@@ -75,7 +76,7 @@
         showing @(fr/subscribe app [:showing])
         a-fn (fn [filter-kw txt]
                [:a {:class (when (= filter-kw showing) "selected")
-                    :href (str "#/" (name filter-kw))} txt])]
+                    :href (rfe/href :filter {:filter filter-kw})} txt])]
     [:footer#footer
      [:span#todo-count
       [:strong active] " " (case active 1 "item" "items") " left"]

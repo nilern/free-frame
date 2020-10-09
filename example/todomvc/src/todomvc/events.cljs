@@ -10,7 +10,8 @@
   ((fnil inc 0) (last (keys todos))))
 
 (def handlers
-  {:add-todo (fn [[_ text]]
+  {:set-showing (fn [[_ showing]] (update-app-db assoc :showing showing))
+   :add-todo (fn [[_ text]]
                (mlet [db get-app-db
                       :let [id (allocate-next-id (:todos db))]]
                  (set-app-db (assoc-in db [:todos id] {:id id :title text :done false}))))
